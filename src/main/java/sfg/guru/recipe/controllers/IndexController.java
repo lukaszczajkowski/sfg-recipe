@@ -1,14 +1,13 @@
 package sfg.guru.recipe.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import sfg.guru.recipe.domain.Recipe;
 import sfg.guru.recipe.services.RecipeService;
 
-import java.util.List;
-
 @Controller
+@Slf4j
 public class IndexController {
 
     private RecipeService recipeService;
@@ -19,8 +18,9 @@ public class IndexController {
 
     @RequestMapping({"", "/", "/index"})
     public String getIndex(Model model) {
+        log.debug("Getting index page....");
 
-        model.addAttribute("recipes",  recipeService.getAllRecipes());
+        model.addAttribute("recipes", recipeService.getAllRecipes());
 
         return "index";
     }
