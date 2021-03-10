@@ -7,6 +7,7 @@ import sfg.guru.recipe.repositories.RecipeRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -29,5 +30,16 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Recipe save(Recipe recipe) {
         return recipeRepository.save(recipe);
+    }
+
+    @Override
+    public Recipe findById(Long id) {
+        Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
+
+        if(!optionalRecipe.isPresent()) {
+            throw new RuntimeException("Recipe not found");
+        }
+
+        return optionalRecipe.get();
     }
 }

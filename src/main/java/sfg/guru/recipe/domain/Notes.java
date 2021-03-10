@@ -6,7 +6,6 @@ import javax.persistence.*;
 
 @Data
 @EqualsAndHashCode(exclude = {"recipe"})
-@ToString(exclude = {"recipe"})
 @Entity
 public class Notes {
 
@@ -21,5 +20,10 @@ public class Notes {
     private String recipeNotes;
 
     public Notes() {
+    }
+
+    @Override
+    public String toString() {
+        return recipeNotes;
     }
 }
