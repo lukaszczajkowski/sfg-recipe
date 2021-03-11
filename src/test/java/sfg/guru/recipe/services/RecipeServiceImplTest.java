@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.context.ActiveProfiles;
+import sfg.guru.recipe.commands.RecipeCommand;
 import sfg.guru.recipe.converters.RecipeCommandToRecipe;
 import sfg.guru.recipe.converters.RecipeToRecipeCommand;
 import sfg.guru.recipe.domain.Recipe;
@@ -37,7 +38,9 @@ class RecipeServiceImplTest {
 
     private RecipeServiceImpl recipeService;
 
+    private static final Long ID_TO_DELETE = 3L;
     Recipe recipe;
+    Recipe recipeToDelete;
     List<Recipe> inputDataSet;
     List<Recipe> retrievedDataSet;
 
@@ -47,6 +50,8 @@ class RecipeServiceImplTest {
         recipeService =
                 new RecipeServiceImpl(recipeRepository, recipeToRecipeCommand, recipeCommandToRecipe);
         recipe = new Recipe();
+        recipeToDelete = new Recipe();
+        recipeToDelete.setId(ID_TO_DELETE);
         inputDataSet = List.of(recipe);
     }
 
@@ -82,7 +87,29 @@ class RecipeServiceImplTest {
     }
 
     @Test
-    void shouldCreateRecipe() {
+    void shouldSaveRecipeCommand() {
+        RecipeCommand command = new RecipeCommand();
+        command.setId(1L);
 
+        Recipe convertedRecipe = new Recipe();
+        convertedRecipe.setId(command.getId());
+
+        when(recipeCommandToRecipe.convert(any()))
+                .thenReturn(convertedRecipe);
+        when(recipeToRecipeCommand.convert(any()))
+                .thenReturn(command);
+        when(recipeRepository.save(any()))
+                .thenReturn(convertedRecipe);
+
+        RecipeCommand actual = recipeService.saveRecipeCommand(command);
+
+        assertThat(actual.getId(), equalTo(command.getId()));
+    }
+
+    @Test
+    void shouldDeleteById() {
+        recipeService.deleteById(ID_TO_DELETE);
+
+        verify(recipeRepository).deleteById(anyLong());
     }
 }

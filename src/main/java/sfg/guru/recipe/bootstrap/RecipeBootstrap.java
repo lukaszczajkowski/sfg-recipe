@@ -53,32 +53,32 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
         Ingredient anchoChiliPowder = new Ingredient();
         anchoChiliPowder.setDescription("ancho chili powder");
         anchoChiliPowder.setAmount(BigDecimal.valueOf(2));
-        anchoChiliPowder.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Tablespoon").get());
+        anchoChiliPowder.setUom(unitOfMeasureRepository.findByDescription("Tablespoon").get());
 
         Ingredient driedOregano = new Ingredient();
         driedOregano.setDescription("dried oregano");
         driedOregano.setAmount(BigDecimal.valueOf(1));
-        driedOregano.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Teaspoon").get());
+        driedOregano.setUom(unitOfMeasureRepository.findByDescription("Teaspoon").get());
 
         Ingredient driedCumin = new Ingredient();
         driedCumin.setDescription("dried cumin");
         driedCumin.setAmount(BigDecimal.valueOf(1));
-        driedCumin.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Teaspoon").get());
+        driedCumin.setUom(unitOfMeasureRepository.findByDescription("Teaspoon").get());
 
         Ingredient sugar = new Ingredient();
         sugar.setDescription("sugar");
         sugar.setAmount(BigDecimal.valueOf(1));
-        sugar.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Teaspoon").get());
+        sugar.setUom(unitOfMeasureRepository.findByDescription("Teaspoon").get());
 
         Ingredient salt = new Ingredient();
         salt.setDescription("salt");
         salt.setAmount(BigDecimal.valueOf(1 / 2));
-        salt.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Teaspoon").get());
+        salt.setUom(unitOfMeasureRepository.findByDescription("Teaspoon").get());
 
         Ingredient garlic = new Ingredient();
         garlic.setDescription("garlic");
         garlic.setAmount(BigDecimal.valueOf(1));
-        garlic.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Clove").get());
+        garlic.setUom(unitOfMeasureRepository.findByDescription("Clove").get());
 
         grilledChickenTacos.addIngredient(anchoChiliPowder);
         grilledChickenTacos.addIngredient(driedOregano);
