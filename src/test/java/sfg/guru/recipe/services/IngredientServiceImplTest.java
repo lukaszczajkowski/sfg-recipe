@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import sfg.guru.recipe.commands.IngredientCommand;
+import sfg.guru.recipe.commands.RecipeCommand;
 import sfg.guru.recipe.converters.IngredientCommandToIngredient;
 import sfg.guru.recipe.converters.IngredientToIngredientCommand;
 import sfg.guru.recipe.converters.UnitOfMeasureCommandToUnitOfMeasure;
@@ -13,6 +14,7 @@ import sfg.guru.recipe.domain.Recipe;
 import sfg.guru.recipe.repositories.RecipeRepository;
 import sfg.guru.recipe.repositories.UnitOfMeasureRepository;
 
+import java.util.HashSet;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -113,6 +115,35 @@ public class IngredientServiceImplTest {
         assertEquals(Long.valueOf(3L), savedCommand.getId());
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, times(1)).save(any(Recipe.class));
+    }
 
+    @Test
+    public void shouldDeleteIngredient() {
+        Long recipeId = 4L;
+        Long ingredientId = 1L;
+
+        Recipe recipe = new Recipe();
+        recipe.setId(recipeId);
+
+        Ingredient ingredient = new Ingredient();
+        ingredient.setId(ingredientId);
+        ingredient.setRecipe(recipe);
+
+        recipe.addIngredient(ingredient);
+
+        Recipe savedRecipe = new Recipe();
+        savedRecipe.setId(recipeId);
+        savedRecipe.setIngredients(new HashSet<>());
+
+        when(recipeRepository.findById(anyLong()))
+                .thenReturn(Optional.of(recipe));
+        when(recipeRepository.save(any(Recipe.class)))
+                .thenReturn(savedRecipe);
+
+
+        ingredientService.deleteIngredientByRecipeIdAndIngredientId(recipeId, ingredientId);
+
+        verify(recipeRepository).findById(anyLong());
+        verify(recipeRepository).save(any());
     }
 }
