@@ -14,6 +14,8 @@ import sfg.guru.recipe.services.IngredientService;
 import sfg.guru.recipe.services.RecipeService;
 import sfg.guru.recipe.services.UnitOfMeasureService;
 
+import java.util.HashSet;
+
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -98,6 +100,24 @@ public class IngredientControllerTest {
         )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/recipe/2/ingredient/3/show"));
+    }
 
+    @Test
+    public void shouldCreateNewIngredient() throws Exception {
+        RecipeCommand recipeCommand = new RecipeCommand();
+        recipeCommand.setId(1L);
+
+        when(recipeService.findCommandById(anyLong()))
+                .thenReturn(recipeCommand);
+        when(unitOfMeasureService.listAllUoms())
+                .thenReturn(new HashSet<>());
+
+        mockMvc.perform(get("/recipe/1/ingredient/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("recipe/ingredient/ingredientform"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("ingredient"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("uomList"));
+
+        verify(recipeService).findCommandById(anyLong());
     }
 }
