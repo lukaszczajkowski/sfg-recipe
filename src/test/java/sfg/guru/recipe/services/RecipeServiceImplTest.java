@@ -7,6 +7,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.test.context.ActiveProfiles;
+import sfg.guru.recipe.converters.RecipeCommandToRecipe;
+import sfg.guru.recipe.converters.RecipeToRecipeCommand;
 import sfg.guru.recipe.domain.Recipe;
 import sfg.guru.recipe.repositories.RecipeRepository;
 
@@ -27,6 +29,12 @@ class RecipeServiceImplTest {
     @Mock
     private RecipeRepository recipeRepository;
 
+    @Mock
+    private RecipeToRecipeCommand recipeToRecipeCommand;
+
+    @Mock
+    private RecipeCommandToRecipe recipeCommandToRecipe;
+
     private RecipeServiceImpl recipeService;
 
     Recipe recipe;
@@ -36,7 +44,8 @@ class RecipeServiceImplTest {
     @BeforeEach
     void setUp() {
         openMocks(this);
-        recipeService = new RecipeServiceImpl(recipeRepository);
+        recipeService =
+                new RecipeServiceImpl(recipeRepository, recipeToRecipeCommand, recipeCommandToRecipe);
         recipe = new Recipe();
         inputDataSet = List.of(recipe);
     }
@@ -70,5 +79,10 @@ class RecipeServiceImplTest {
         assertNotNull("Null recipe returned", recipeReturned);
         verify(recipeRepository, times(1)).findById(anyLong());
         verify(recipeRepository, never()).findAll();
+    }
+
+    @Test
+    void shouldCreateRecipe() {
+
     }
 }

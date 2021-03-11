@@ -1,12 +1,15 @@
 package sfg.guru.recipe.domain;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Recipe {
 
     @Id
@@ -38,9 +41,6 @@ public class Recipe {
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
-
-    public Recipe() {
-    }
 
     public void setNotes(Notes notes) {
         this.notes = notes;

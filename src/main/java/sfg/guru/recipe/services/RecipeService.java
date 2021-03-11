@@ -1,5 +1,6 @@
 package sfg.guru.recipe.services;
 
+import sfg.guru.recipe.commands.RecipeCommand;
 import sfg.guru.recipe.domain.Recipe;
 
 import java.util.List;
@@ -11,4 +12,6 @@ public interface RecipeService {
     Recipe save(Recipe recipe);
 
     Recipe findById(Long id);
+
+    RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand);
 }

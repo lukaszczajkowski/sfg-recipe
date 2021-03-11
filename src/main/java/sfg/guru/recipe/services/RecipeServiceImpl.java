@@ -2,9 +2,13 @@ package sfg.guru.recipe.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import sfg.guru.recipe.commands.RecipeCommand;
+import sfg.guru.recipe.converters.RecipeCommandToRecipe;
+import sfg.guru.recipe.converters.RecipeToRecipeCommand;
 import sfg.guru.recipe.domain.Recipe;
 import sfg.guru.recipe.repositories.RecipeRepository;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +18,15 @@ import java.util.Optional;
 public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
+    private final RecipeToRecipeCommand recipeToRecipeCommandConverter;
+    private final RecipeCommandToRecipe recipeCommandToRecipeConverter;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository) {
+    public RecipeServiceImpl(RecipeRepository recipeRepository,
+                             RecipeToRecipeCommand recipeToRecipeCommandConverter,
+                             RecipeCommandToRecipe recipeCommandToRecipeConverter) {
         this.recipeRepository = recipeRepository;
+        this.recipeToRecipeCommandConverter = recipeToRecipeCommandConverter;
+        this.recipeCommandToRecipeConverter = recipeCommandToRecipeConverter;
     }
 
     @Override
@@ -41,5 +51,13 @@ public class RecipeServiceImpl implements RecipeService {
         }
 
         return optionalRecipe.get();
+    }
+
+    @Override
+    @Transactional
+    public RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand) {
+        Recipe recipe = recipeCommandToRecipeConverter.convert(recipeCommand);
+        Recipe savedRecipe = recipeRepository.save(recipe);
+        return recipeToRecipeCommandConverter.convert(savedRecipe);
     }
 }
