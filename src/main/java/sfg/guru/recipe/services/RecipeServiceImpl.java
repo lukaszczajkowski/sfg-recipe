@@ -6,6 +6,7 @@ import sfg.guru.recipe.commands.RecipeCommand;
 import sfg.guru.recipe.converters.RecipeCommandToRecipe;
 import sfg.guru.recipe.converters.RecipeToRecipeCommand;
 import sfg.guru.recipe.domain.Recipe;
+import sfg.guru.recipe.exceptions.NotFoundException;
 import sfg.guru.recipe.repositories.RecipeRepository;
 
 import javax.transaction.Transactional;
@@ -47,7 +48,7 @@ public class RecipeServiceImpl implements RecipeService {
         Optional<Recipe> optionalRecipe = recipeRepository.findById(id);
 
         if(!optionalRecipe.isPresent()) {
-            throw new RuntimeException("Recipe not found");
+            throw new NotFoundException("Recipe not found");
         }
 
         return optionalRecipe.get();
